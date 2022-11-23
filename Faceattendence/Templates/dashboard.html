@@ -1,0 +1,86 @@
+{% include 'header.html' %}
+{% load static %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+       
+          
+        <div class="section-body">
+            <div class="row">
+          <div class="col-10 col-md-10 col-lg-10;">
+                <div class="card">
+              <div class="card-header">
+                    <h4>Add Deliverable</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Deliverable</label>
+                      <input type="text" id="deliverable" class="form-control">
+                    </div>
+
+
+
+                 
+                  <div class="card-footer text-right">
+                    <button type="button" type="submit" class="btn btn-success" value="save" onclick="add_delivery()" >Save </button>
+                    
+                  </div>
+                </div> 
+              
+          </div>
+        </div>
+      </div>
+
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+
+      <script>
+        function add_delivery(){
+  
+            var deliverable=$('#deliverable').val()
+          
+            if(deliverable == ""){
+            
+              swal("Please Enter deliverable.", {
+                  icon: "info",
+                  button: "Ok",
+                  closeOnClickOutside: false,     
+                  }).then(function() {
+                    
+                });
+              
+              }
+           
+            else{
+          
+                $.ajax({
+                      method : "POST",
+                      url : "/new_deliverable/",
+                      data : {
+                        
+                        'deliverable':deliverable,
+                    
+                      },
+                      success : function(response){
+                         
+                          if (response == "success"){
+                      
+                              alert("Data store")
+           
+                              location.href = '/project/'
+           
+                          }
+                          
+                          else{
+                          
+                              swal("deliverable already exixts")
+                          
+                          }
+           
+                      
+                      }
+           
+              });
+           }
+          }
+      </script>
+     {% include 'footer.html' %}

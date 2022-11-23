@@ -1,0 +1,88 @@
+{% include 'header.html' %}
+{% load static %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+         
+          
+        <div class="section-body">
+            <div class="row">
+                <div class="col-10 col-md-10 col-lg-10;">
+                <div class="card">
+              <div class="card-header">
+                    <h4>Add Technology</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Technology</label>
+                      <input type="text" id="technology" class="form-control">
+                    </div>
+
+
+
+               
+                  <div class="card-footer text-right">
+                    <button type="button" type="submit" class="btn btn-success" value="save" onclick="add_technology()" >Save </button>
+                    
+                  </div>
+                </div> 
+           
+          </div>
+        </div>
+      </div>
+
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+      <script>
+
+        function add_technology(){
+  
+            var technology=$('#technology').val()
+          
+            if(technology == ""){
+            
+              swal("Please Enter technology.", {
+                  icon: "info",
+                  button: "Ok",
+                  closeOnClickOutside: false,     
+                  }).then(function() {
+                    
+                });
+              
+              }
+           
+            else{
+          
+                $.ajax({
+                      method : "POST",
+                      url : "/new_technology/",
+                      data : {
+                        
+                        'technology':technology,
+                    
+                      },
+                      success : function(response){
+                         
+                          if (response == "success"){
+                      
+                              alert("Data store")
+           
+                              location.href = '/project/'
+           
+                          }
+                          
+                          else{
+                          
+                              swal("technology already exixts")
+                          
+                          }
+           
+                      
+                      }
+           
+              });
+           }
+          }
+      </script>
+     {% include 'footer.html' %}

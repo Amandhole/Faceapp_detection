@@ -1,0 +1,269 @@
+{% include 'header.html' %}
+{% load static %}
+      <!-- Main Content -->
+
+
+      <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+      
+        <style>
+          .select2-selection__choice {
+            padding: 5px 5px !important;
+              height: 28px !important;
+              line-height: 1.4;
+        </style>
+      
+      </head>  
+
+      <body>
+        
+     
+      <div class="main-content">
+        <section class="section">
+      
+          
+        <div class="section-body">
+            <div class="row">
+              <div class="col-12 col-md-12 col-lg-12;">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Add Details</h4>
+                  </div>
+
+                  <div class="card-body">
+                  <div class="row">
+                  <div class="col-6 col-md-6 col-lg-12;">
+
+
+                   <div id="project_name" class="form-group">
+                      <label>Project Name</label>
+                                                                                      
+                                            
+                      <select  style="display: inline-block;" class="form-control">
+                                                                              
+                      {% for i in obj_project %}
+                          <option value = "{{i.project_name}}" >{{i.project_name}}</option>
+                      {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group" style="display: inline-block; margin-left:30px;">
+                        <a onclick = "project_value()"  class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a>
+                    </div>
+					
+					    <div id = "input_mode_project">
+						<div class="form-group" >
+							<label>Project Name<span style = "color:red">*</span>:</label>
+							<input type="text" id="hidden_project" class="form-control" >
+							</div>
+						</div>
+
+
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text"  id="client_name" placeholder="client name" class="form-control">
+                      </div>
+
+
+                    <div id="amc"  class="form-group">
+                      <label>AMC</label>
+                                                                                      
+                      <select  type="text"  class="form-control" name="amc" placeholder="amc" >
+                                  
+                        <option value="Mobile App">Mobile App</option>
+                        <option value="Online Server">Online Server</option>
+                
+                      </select>
+                    </div>
+
+                    <div class="form-group" style="display: inline-block; margin-left:30px;">
+                        <a onclick = "amc_value()"  class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a>
+                    </div>
+
+
+						<div id = "input_mode_amc">
+						<div class="form-group" >
+							<label>AMC Name<span style = "color:red">*</span>:</label>
+							<input type="text" id="hidden_amc" class="form-control" >
+						</div>
+					</div>
+
+                  </div>
+
+                  <div class="col-6 col-md-6 col-lg-12;">
+                    
+                    <div class="form-group">
+                        <label>AMC Type</label>
+                                                                                        
+                        <select  type="text" id="amc_type"  class="form-control" name="amc_type" placeholder="amc type" >
+                                    
+                          <option value="Monthly">Monthly</option>
+                          <option value="Quarterly">Quarterly</option>
+                          <option value="Yearly">Yearly</option>
+                  
+                        </select>
+                      </div>
+
+
+                    <div class="form-group">
+                      <label>Remark</label>
+                      <textarea id="remark" class="form-control"></textarea>
+                    </div>
+                  </div>
+             
+                 
+                  <div class="card-footer text-right">
+                    <button type="button" type="button" class="btn btn-success" value="save" onclick="add_amc()" >Save </button>
+                    
+                  </div>
+                </div> 
+               
+          </div>
+        </div>
+      </div>
+    </body>
+  	
+<script>
+    $(document).ready(function(){
+       $("#input_mode_project").hide();
+       $("#input_mode_amc").hide();
+       $(document).bind('keypress', function(e) {
+       if(e.keyCode==13){
+           $('#save_button').trigger('click');
+       }
+       });
+       })
+   
+   
+           function add_amc(){
+             var project_name=$('#project_name').val()
+   
+             var client_name=$('#client_name').val()
+   
+             var amc=$('#amc').val()
+   
+             var amc_type=$('#amc_type').val()
+         
+             var remark=$('#remark').val()
+             
+             
+             if(project_name == ""){
+               
+               swal("Please Enter Project Name", {
+                 icon: "info",
+                 button: "Ok",
+                 closeOnClickOutside: false,     
+                 }).then(function() {
+                   
+               });
+             
+             }
+   
+           
+             else if(client_name == ""){
+             
+             swal("Please Enter Client Name.", {
+                 icon: "info",
+                 button: "Ok",
+                 closeOnClickOutside: false,     
+                 }).then(function() {
+                   
+               });
+             
+             }
+           
+           
+             else if(amc == ""){
+             
+               swal("Please Enter AMC.", {
+                   icon: "info",
+                   button: "Ok",
+                   closeOnClickOutside: false,     
+                   }).then(function() {
+                     
+                 });
+               
+               }
+             
+             
+               else if(amc_type == ""){
+               
+                 swal("Please Enter AMC Type.", {
+                     icon: "info",
+                     button: "Ok",
+                     closeOnClickOutside: false,     
+                     }).then(function() {
+                       
+                   });
+                 
+                 }
+             
+             else{
+   
+            
+             var project_name=$('#project_name').val()
+             var client_name=$('#client_name').val()
+             var amc=$('#amc').val()
+             var amc_type=$('#amc_type').val()
+             var remark=$('#remark').val()
+             
+             
+                          
+           $.ajax({
+               method : "POST",
+               url : "/add_amc",
+               data : {
+                 'project_name':project_name,
+                 'client_name':client_name,
+                 'amc':amc,
+                 'amc_type':amc_type,
+                 'remark':remark,
+                 
+               },
+               success : function(response){
+                  
+                   if (response == "success"){
+               
+                       alert("Data store")
+    
+                       location.href = '/amc_project/'
+    
+                   }
+                   
+                   else{
+                   
+                       alert("User already exixts")
+                   
+                   }
+    
+               
+               }
+    
+       });
+            }
+           }
+           
+           
+           
+           
+           
+       function project_value(){
+   
+        $("#project_name").hide();
+        $("#input_mode_project").show();
+       
+           
+       
+   }
+   
+       function amc_value(){
+   
+        $("#amc").hide();
+        $("#input_mode_amc").show();
+           
+       
+   }
+   
+         </script>
+        {% include 'footer.html' %}

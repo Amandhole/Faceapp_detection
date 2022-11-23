@@ -1,0 +1,211 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from radixtouch.in/templates/admin/zivi/source/light/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 11 Jul 2020 10:12:39 GMT -->
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Facedetection Admin</title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/app.min.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/bundles/bootstrap-social/bootstrap-social.css'%}">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+  <link rel="stylesheet" href="{% static 'assets/css/components.css'%}">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css/custom.css'%}">
+  <link rel='shortcut icon' type='image/x-icon' href='static/assets/img/favicon.ico' />
+</head>
+
+<style>
+.theme-white .card.card-primary {
+    border-top: 2px solid #f9f9f9;
+}
+.card{
+	border: none;
+	border-top: 5px solid  rgb(176,106,252);
+	background: #21204261;
+	color: #57557A;
+}
+p{
+	font-weight: 600;
+	font-size: 19px;
+	color :white;
+}
+.btn-primary{
+background: linear-gradient(135deg, rgba(176,106,252,1) 39%,rgba(116,17,255,1) 101%);
+border: none;
+border-radius: 50px;
+}
+.btn-primary:focus{
+	box-shadow: none;
+	border: none;
+}
+small{
+	color: #F2CEFF;
+	font-size : 14px;
+}
+.far.fa-user{
+	font-size: 15px;
+}
+.form-group>label {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+.form-group .control-label, .form-group>label {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+</style>
+
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <section class="section">
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+            <div class="card py-3 px-2" style="margin-top: 70px;">
+             
+               <p class="text-center mb-3 mt-2">Admin Login</p> 
+             
+			  
+              <div class="card-body" style="margin-top: -20px;">
+                <form method="POST" action="dashboard.html" class="needs-validation" novalidate="">
+                  <div class="form-group">
+                    <label for="username">User Name</label>
+                     <input type="text" id="username" class="form-control" name="email" tabindex="1" required autofocus  placeholder="User Name" >
+					
+					<center><span style="display:none;color:#FF2E2E;font-size: 14px;" id ="username_error">Please Enter Username</span></center>
+                  </div>
+                  <div class="form-group">
+                    <div class="d-block">
+                      <label for="password" class="control-label">Password</label>
+               
+                    </div>
+                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required placeholder="Password">
+                    
+					<center><span style="display:none;color:#FF2E2E;font-size: 14px;" id ="pwd_error">Please Enter Password</span></center>
+					<center><span style="display:none;color:white;font-size: 14px;" id ="error">Invalid Credentials!</span></center>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group mt-3">
+                    <button onclick="login()" type="button" id = "save_button" class="btn btn-block btn-primary btn-lg"tabindex="4" style="margin-top: -10px;"> <small>Login</small></button>
+                  </div>
+                </form>
+               
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- General JS Scripts -->
+  <script src="{% static 'assets/js/app.min.js'%}"></script>
+  <!-- JS Libraies -->
+  <!-- Page Specific JS File -->
+  <!-- Template JS File -->
+  <script src="{% static 'assets/js/scripts.js'%}"></script>
+  <!-- Custom JS File -->
+  <script src="{% static 'assets/js/custom.js'%}"></script>
+</body>
+
+
+<!-- Mirrored from radixtouch.in/templates/admin/zivi/source/light/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 11 Jul 2020 10:12:39 GMT -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+      $(document).bind("keypress", function (e) {
+        if (e.keyCode == 13) {
+          $("#save_button").trigger("click");
+        }
+      });
+	  
+    });
+  
+function login() {
+//debugger
+var username = $("#username").val();
+var password = $("#password").val();
+
+if (username == "") {
+$("#username_error").show();
+$("#username").focus();
+} 
+
+else if (password == "") {
+$("#pwd_error").show();
+$("#password").focus();
+}
+
+
+else {
+      $.ajax({
+        method: "POST",
+        url: "{% url 'Admin_login_page' %}",
+        contentType:"application/json",
+        data:JSON.stringify ({
+          "username": username,
+          "password": password,
+        }),
+
+        success: function (response) {
+          console.log(response['msg'])
+          if (response["status"] == "1") {
+              location.href = "{% url 'Admin_dashboard' %}";
+            } 
+			
+			    else if(response["status"]=="0") {
+              swal({
+                    icon: "error",
+                    text:"Invalid Credential",
+                    closeOnClickOutside:false
+                  })/*.then(function() {
+				              location.href = "{% url 'Admin_dashboard' %}";
+			            }); */
+            }
+          else {
+            swal({
+                  icon: "error",
+                    text:"Something Went Wrong",
+                    closeOnClickOutside:false
+                  })
+          }  
+          },
+        });
+      }
+    }
+  
+$("#username").keyup(function () {
+  $("#username_error").hide();
+  $("#invalid_error").hide();
+  $("#error").hide();
+});
+
+$("#password").keyup(function () {
+  $("#pwd_error").hide();
+  $("#invalid_error").hide();
+});
+
+$("#password").keyup(function () {
+  $("#pwd_error").hide();
+  $("#user_inactive_error").hide();
+  $("#error").hide();
+});
+
+
+</script>
+
+
+
+</html>

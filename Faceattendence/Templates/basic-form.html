@@ -1,0 +1,356 @@
+{% include 'header.html' %}
+{% load static %}
+      <!-- Main Content -->
+
+
+      <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+      
+        <style>
+          .select2-selection__choice {
+            padding: 5px 5px !important;
+              height: 28px !important;
+              line-height: 1.4;
+        </style>
+      
+      </head>  
+
+      <body>
+        
+     
+      <div class="main-content">
+        <section class="section">
+      
+          
+        <div class="section-body">
+            <div class="row">
+              <div class="col-12 col-md-12 col-lg-12;">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Add Details</h4>
+                  </div>
+
+                  <div class="card-body">
+                  <div class="row">
+                  <div class="col-6 col-md-6 col-lg-12;">
+                    <div class="form-group">
+                      <label>Project Name</label>
+                      <input type="text" id="project_name" placeholder="project name" class="form-control">
+                    </div>
+
+
+
+                    <div class="form-group">
+                      <label>Deliverable</label>
+                                                                                      
+                      <span class="validation" style="display:initial;"></span>                          
+                      <select id="deliverable" class="form-control" style = "color: #151414;"  multiple="multiple">
+                                                                              
+                      {% for i in obj_del %}
+                          <option value = "{{i.deliverable}}" >{{i.deliverable}}</option>
+                      {% endfor %}
+                      </select>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label>Technology</label>
+                                                                                      
+                      <span class="validation" style="display:initial;"></span>                          
+                      <select id="technology" class="form-control" style = "color: #151414;"  multiple="multiple">
+                                                                              
+                      {% for i in obj_tec %}
+                          <option value = "{{i.technology}}" >{{i.technology}}</option>
+                      {% endfor %}
+                      </select>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label>Client Name</label>
+                      <input type="text"  id="client_name" placeholder="client name" class="form-control">
+                    </div>
+
+
+                    <div class="form-group">
+                      <label>Contact Number</label>
+                      <input type="text"  id="contact_number" pattern="\d*" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="contact number" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Contact Email</label>
+                      <input type="email"  id="contact_email" placeholder="contact email" class="form-control">
+                    </div>
+
+                    <div class="form-group" style="display: inline-block">
+                      <label>Order Date</label>
+                      <input type="date"  id="order_date" class="form-control">
+                    </div>
+
+                    <div class="form-group" style="display: inline-block; margin-left:30px;">
+                      <label>Start Date</label>
+                      <input type="date"  id="start_date" class="form-control">
+                    </div>
+
+                  </div>
+
+                  <div class="col-6 col-md-6 col-lg-12;">
+                    
+                    <div class="form-group ">
+                      <label>Duration</label>
+                      <input type="text"  id="duration" pattern="\d*" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="duration" class="form-control">
+                    </div>
+
+                    <div class="form-group" style="display: inline-block">
+                      <label>Expected End Date</label>
+                      <input type="date"  id="expected_end_date" class="form-control">
+                    </div>
+
+                    <div class="form-group" style="display: inline-block; margin-left:30px;">
+                      <label>Actual End Date</label>
+                      <input type="date" id="actual_end_date" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Status</label>
+                      
+                      <form>
+                        <label class="radio-inline">
+                          <input type="radio"  name="status" value= "active" checked>Active
+                          &nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="status"value= "hold">Hold
+                          &nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio"  name="status" value= "completed">Completed
+                          &nbsp;&nbsp;
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio"  name="status" value= "cancelled">Cancelled
+                        </label>
+                      </form>
+                    </div>
+
+
+                    <div class="form-group">
+                      <label>File</label>
+                      <input type="file" id="file_data"  accept="application/pdf,image/x-png,image/gif,image/jpeg">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Remark</label>
+                      <textarea id="remark" class="form-control"></textarea>
+                    </div>
+                  </div>
+                  </div>
+                 
+                  <div class="card-footer text-right">
+                    <button type="button" type="submit" class="btn btn-success" value="save" onclick="add_entry()" >Save </button>
+                    
+                  </div>
+                </div> 
+               
+          </div>
+        </div>
+      </div>
+    </body>
+<script>
+
+$("#deliverable").select2({
+  tags: true,
+  placeholder: " Please Select deliverable",
+});
+
+$("#technology").select2({
+  tags: true,
+  placeholder: " Please Select technology",
+});
+
+        function add_entry(){
+          var project_name=$('#project_name').val()
+
+          var delivery_id_list = []
+          for (var option of document.getElementById('deliverable').options) {
+            if (option.selected) {
+              delivery_id_list.push(option.value);
+            }
+          }
+
+          var technology_id_list = []
+          for (var option of document.getElementById('technology').options) {
+            if (option.selected) {
+              technology_id_list.push(option.value);
+            }
+          }
+
+         
+          var client_name=$('#client_name').val()
+
+          var contact_number=$('#contact_number').val()
+
+          var contact_email=$('#contact_email').val()
+        
+          var order_date=$('#order_date').val()
+
+          var start_date=$('#start_date').val()
+
+          var duration=$('#duration').val()
+
+          var expected_end_date=$('#expected_end_date').val()
+
+          var actual_end_date=$('#actual_end_date').val()
+
+          var status = $("input[name='status']:checked").val();
+          if(status){
+              alert("Your are a - " + status);
+          }
+
+          var file_data=$('#file_data').val()
+
+          var remark=$('#remark').val()
+          
+          
+          if(project_name == ""){
+            
+            swal("Please Enter Project Name", {
+              icon: "info",
+              button: "Ok",
+              closeOnClickOutside: false,     
+              }).then(function() {
+                
+            });
+          
+          }
+
+          else if(deliverable == ""){
+            
+            swal("Please Enter deliverable", {
+              icon: "info",
+              button: "Ok",
+              closeOnClickOutside: false,     
+              }).then(function() {
+                
+            });
+          
+          }
+          
+        
+        
+          else if(technology == ""){
+          
+            swal("Please Enter technology.", {
+                icon: "info",
+                button: "Ok",
+                closeOnClickOutside: false,     
+                }).then(function() {
+                  
+              });
+            
+            }
+        
+          else if(client_name == ""){
+          
+          swal("Please Enter Client Name.", {
+              icon: "info",
+              button: "Ok",
+              closeOnClickOutside: false,     
+              }).then(function() {
+                
+            });
+          
+          }
+        
+        
+          else if(contact_number == ""){
+          
+            swal("Please Enter Contact Number.", {
+                icon: "info",
+                button: "Ok",
+                closeOnClickOutside: false,     
+                }).then(function() {
+                  
+              });
+            
+            }
+          
+          
+            else if(contact_email == ""){
+            
+              swal("Please Enter Contact Email.", {
+                  icon: "info",
+                  button: "Ok",
+                  closeOnClickOutside: false,     
+                  }).then(function() {
+                    
+                });
+              
+              }
+          
+         
+        
+            else if(order_date == ""){
+          
+              swal("Please Enter Order date.", {
+                  icon: "info",
+                  button: "Ok",
+                  closeOnClickOutside: false,     
+                  }).then(function() {
+                    
+                });
+              
+              }
+          
+           
+          else{
+
+            console.log(file_data)
+          
+
+            var form = $("#form_data")[0];
+            var data_item = new FormData(form);
+            data_item.append("file_data",document.getElementById("file_data").files[0])
+            data_item.append("project_name",project_name)
+            data_item.append("delivery_id_list",JSON.stringify(delivery_id_list))
+            data_item.append("technology_id_list",JSON.stringify(technology_id_list))
+            data_item.append("client_name",client_name)
+            data_item.append("contact_number",contact_number)
+            data_item.append("contact_email",contact_email)
+            data_item.append("order_date",order_date)
+            data_item.append("start_date",start_date)
+            data_item.append("duration",duration)
+            data_item.append("expected_end_date",expected_end_date)
+            data_item.append("actual_end_date",actual_end_date)
+            data_item.append("status",status)
+            data_item.append("remark",remark)
+           
+          
+                $.ajax({
+                    method : "POST",
+                    url : "/new_entry/",
+                    enctype : "mutipart/form_data",
+                    processData : false,
+                    contentType : false,
+                    cache : false,
+                    data :data_item,
+                    
+                    success : function(response){
+                      if (response == "success"){
+                        swal("project has been saved!", {
+                        icon: "success",
+                        button: "Ok",
+                        closeOnClickOutside: false,
+                        }).then(function() {
+                          location.href = '/project/'
+                        });
+                      }
+                    }
+         
+            });
+         }
+        }
+
+      </script>
+     {% include 'footer.html' %}

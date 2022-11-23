@@ -1,0 +1,119 @@
+
+{% load static %}
+{% include 'header.html' %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <ul class="breadcrumb breadcrumb-style ">
+            <li class="breadcrumb-item">
+              <h4 class="page-title m-b-0">Data Tables</h4>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="index.html">
+                <i class="fas fa-home"></i></a>
+            </li>
+            {% comment %} <li class="breadcrumb-item">Tables</li>
+            <li class="breadcrumb-item">Data Tables</li> {% endcomment %}
+          </ul>
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Basic DataTables</h4>
+                    <div class="col-md-10 pull-right">
+                      <a href="/adduser/" style="border-radius: 5px;" class="btn btn-icon btn-primary pull-right" > Add New Details</a>
+                        </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-1">
+                        <thead>
+                          <tr>
+                            <th>
+                           Sr.No.
+                            </th>
+                            <th>Start Date</th>
+                            <th>End date</th>
+                            <th>Amount</th>
+                            <th>Paid</th>
+                            <th>Balance</th>
+                            <th>Last Paid</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                             
+                          {% for i in obj %}
+              
+              <tr>
+                           <th scope="row">{{forloop.counter}}</th>
+                           <td>{{i.project_name}}</td>
+                           <td>{{i.order_date}}</td>
+                           <td>{{i.deliverable}}</td>
+                           <td>{{i.technology}}</td>
+                           <td>{{i.client_name}}</td>
+                           <td>{{i.status}}</td>
+                        
+                         
+                         
+             <td>
+               <a class="btn btn-outline-primary" href = "/edit_entry/{{i.id}}">edit</a>
+                              <a class="btn btn-outline-dark" onclick = "delete_entry('{{i.id}}')" ><i class=" fas fa fa-trash" ></i></a>
+                           </td>
+                         </tr>
+             
+             {% endfor %}
+             
+                       </tbody>
+
+
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+     
+<script>
+
+  function delete_entry(id){
+    console.log(id)
+    swal({
+      title: "Are you sure?",
+      text: "",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method : "POST",
+          url : "/Delete_entry/",
+          data : {
+            'id':id
+            },
+          success : function(response){
+            if (response == "success"){
+              swal("project has been Deleted!", {
+              icon: "success",
+              button: "Ok",
+              closeOnClickOutside: false,
+              }).then(function() {
+                location.reload();
+              });
+            }
+          }
+        });
+      }
+    });
+  }
+  
+  
+</script>
+      {% include 'footer.html' %}
